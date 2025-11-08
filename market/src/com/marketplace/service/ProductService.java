@@ -1,32 +1,66 @@
 package com.marketplace.service;
 
 import com.marketplace.model.Product;
+import com.marketplace.repository.ProductRepository;
+
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
- * ProductService — хранит товары в памяти (Map<UUID,Product>).
- * Поддерживает CRUD, базовый поиск/фильтрацию и примитивный кэш (по строковому ключу).
+ * ProductService — хранит товары в памяти (Map<UUID,Product>)
+ * Использует ProductRepository для персистентности
+ * Поддерживает CRUD, поиск/фильтрацию, кэш и аудит действий пользователя
  */
-
 public class ProductService {
 
     private final Map<UUID, Product> products = new HashMap<>();
-
     private final Map<String, List<Product>> cache = new HashMap<>();
+    private final ProductRepository repository;
+    private final AuditService auditService;
+    private String currentUser = "unknown";
+
+    public ProductService(ProductRepository repository, AuditService auditService) {
+        this.repository = Objects.requireNonNull(repository, "repository must not be null");
+        this.auditService = Objects.requireNonNull(auditService, "auditService must not be null");
+
+        List<Product> loaded = repository.loadAll();
+        if (loaded != null) {
+            for (Product p : loaded) {
+                products.put(p.getId(), p);
+            }
+        }
+    }
+
+    public void setCurrentUser(String username) {
+        if (username != null) {
+            this.currentUser = username;
+        }
+    }
 
     public synchronized UUID addProduct(Product p) {
         Objects.requireNonNull(p, "product must not be null");
         products.put(p.getId(), p);
+        persist();
         invalidateCache();
+
+        auditService.log(currentUser, "добавил товар: " + p.getName());
         return p.getId();
+    }
+
+    public synchronized void deleteAll() {
+        products.clear();
+        invalidateCache();
+        persist();
     }
 
     public synchronized boolean deleteProduct(UUID id) {
         Product removed = products.remove(id);
         if (removed != null) {
+            persist();
             invalidateCache();
+
+            auditService.log(currentUser, "удалил товар: " + removed.getName());
             return true;
         }
         return false;
@@ -36,7 +70,10 @@ public class ProductService {
         Product existing = products.get(id);
         if (existing == null) return false;
         updater.update(existing);
+        persist();
         invalidateCache();
+
+        auditService.log(currentUser, "обновил товар: " + existing.getName());
         return true;
     }
 
@@ -48,7 +85,6 @@ public class ProductService {
         return new ArrayList<>(products.values());
     }
 
-
     public List<Product> searchByName(String name) {
         String key = "name:" + safe(name);
         return cacheComputeIfAbsent(key, () ->
@@ -58,7 +94,7 @@ public class ProductService {
     }
 
     public List<Product> searchByCategory(String category) {
-        String key = "cat:" + safe(category);
+        String key = "category:" + safe(category);
         return cacheComputeIfAbsent(key, () ->
                 products.values().stream()
                         .filter(p -> p.getCategory().equalsIgnoreCase(category))
@@ -115,7 +151,6 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-
     private synchronized <T> List<T> cacheComputeIfAbsent(String key, SupplierList<T> supplier) {
         @SuppressWarnings("unchecked")
         List<T> cached = (List<T>) cache.get(key);
@@ -135,6 +170,14 @@ public class ProductService {
         return s == null ? "" : s.toLowerCase();
     }
 
+    private void persist() {
+        try {
+            repository.saveAll(products.values());
+        } catch (Exception e) {
+            System.err.println("Ошибка при сохранении данных репозитория: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     @FunctionalInterface
     public interface SupplierList<T> {
@@ -146,4 +189,3 @@ public class ProductService {
         void update(Product p);
     }
 }
-
