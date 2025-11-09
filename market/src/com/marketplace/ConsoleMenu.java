@@ -20,10 +20,10 @@ public class ConsoleMenu {
     }
 
     public void start() {
-        System.out.println("=== Marketplace Console ===");
+        System.out.println("== Marketplace Console ==");
 
         while (true) {
-            System.out.println("\nВведите команду (add, update, delete, list, search, filter, exit):");
+            System.out.print("Введите команду (add, update, delete, list, search, filter, stats, exit): ");
             String command = scanner.nextLine().trim().toLowerCase();
 
             switch (command) {
@@ -33,6 +33,7 @@ public class ConsoleMenu {
                 case "list" -> listAll();
                 case "search" -> searchProducts();
                 case "filter" -> filterProducts();
+                case "stats" -> productService.printStats();
                 case "exit" -> {
                     System.out.println("Выход...");
                     return;

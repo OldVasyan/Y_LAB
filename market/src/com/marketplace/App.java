@@ -21,10 +21,13 @@ public class App {
         auth.login("admin", "admin123");
         productService.setCurrentUser(auth.getCurrentUser().orElse("unknown"));
 
+
+
+        // вызов консольного меню
         ConsoleMenu menu = new ConsoleMenu(productService, auth);
         menu.start();
 
-        //блок для демонстрации товаров, очищаем бд, добавляем демотовары, выводим на экран
+        // --блок для демонстрации товаров, очищаем бд, добавляем демотовары, выводим на экран
         //productService.deleteAll();
         //addDemoProducts(productService);
         //System.out.println("\nВсе продукты:");

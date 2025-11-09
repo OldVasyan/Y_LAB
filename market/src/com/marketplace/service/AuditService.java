@@ -19,10 +19,15 @@ public class AuditService {
         }
     }
 
-    public void log(String username, String action) {
+    // synchronized - чтобы избежать коллизий
+    public synchronized void log(String username, String action) {
         String record = String.format("[%s] User: %s -> %s",
                 LocalDateTime.now(), username, action);
-        System.out.println(record); // для наглядности при тестах потом удалю
+
+        // вывод в консоль для наглядности, потом удалю
+        System.out.println(record);
+
+        // запись в файл, append = true - добавляем в конец
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE, true))) {
             writer.write(record);
             writer.newLine();

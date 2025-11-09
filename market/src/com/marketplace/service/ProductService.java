@@ -7,11 +7,6 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-/**
- * ProductService — хранит товары в памяти (Map<UUID,Product>)
- * Использует ProductRepository для персистентности
- * Поддерживает CRUD, поиск/фильтрацию, кэш и аудит действий пользователя
- */
 public class ProductService {
 
     private final Map<UUID, Product> products = new HashMap<>();
@@ -19,6 +14,8 @@ public class ProductService {
     private final ProductRepository repository;
     private final AuditService auditService;
     private String currentUser = "unknown";
+    private int cacheHits = 0;
+    private int cacheMisses = 0;
 
     public ProductService(ProductRepository repository, AuditService auditService) {
         this.repository = Objects.requireNonNull(repository, "repository must not be null");
@@ -38,20 +35,20 @@ public class ProductService {
         }
     }
 
+    public void printStats() {
+        System.out.println("Товаров в системе: " + products.size());
+        System.out.println("Кэш: попаданий=" + cacheHits + ", промахов=" + cacheMisses);
+    }
+
+    // --------------------- CRUD ----------------------
+
     public synchronized UUID addProduct(Product p) {
         Objects.requireNonNull(p, "product must not be null");
         products.put(p.getId(), p);
         persist();
         invalidateCache();
-
-        auditService.log(currentUser, "добавил товар: " + p.getName());
+        auditService.log(currentUser, "добавил товар: " + p.getName() +" ID: "+p.getId());
         return p.getId();
-    }
-
-    public synchronized void deleteAll() {
-        products.clear();
-        invalidateCache();
-        persist();
     }
 
     public synchronized boolean deleteProduct(UUID id) {
@@ -59,11 +56,17 @@ public class ProductService {
         if (removed != null) {
             persist();
             invalidateCache();
-
-            auditService.log(currentUser, "удалил товар: " + removed.getName());
+            auditService.log(currentUser, "удалил товар: " + removed.getName() +" ID: "+removed.getId());
             return true;
         }
         return false;
+    }
+
+    public synchronized void deleteAll() {
+        products.clear();
+        persist();
+        invalidateCache();
+        auditService.log(currentUser, "очистил каталог");
     }
 
     public synchronized boolean updateProduct(UUID id, ProductUpdater updater) {
@@ -72,14 +75,11 @@ public class ProductService {
         updater.update(existing);
         persist();
         invalidateCache();
-
-        auditService.log(currentUser, "обновил товар: " + existing.getName());
+        auditService.log(currentUser, "обновил товар: " + existing.getName()  +" ID: "+existing.getId());
         return true;
     }
 
-    public synchronized Optional<Product> getById(UUID id) {
-        return Optional.ofNullable(products.get(id));
-    }
+    // --------------------- Поиск и фильтрация ----------------------
 
     public synchronized List<Product> listAll() {
         return new ArrayList<>(products.values());
@@ -87,7 +87,7 @@ public class ProductService {
 
     public List<Product> searchByName(String name) {
         String key = "name:" + safe(name);
-        return cacheComputeIfAbsent(key, () ->
+        return getCachedOrCompute(key, () ->
                 products.values().stream()
                         .filter(p -> p.getName().toLowerCase().contains(name.toLowerCase()))
                         .collect(Collectors.toList()));
@@ -95,7 +95,7 @@ public class ProductService {
 
     public List<Product> searchByCategory(String category) {
         String key = "category:" + safe(category);
-        return cacheComputeIfAbsent(key, () ->
+        return getCachedOrCompute(key, () ->
                 products.values().stream()
                         .filter(p -> p.getCategory().equalsIgnoreCase(category))
                         .collect(Collectors.toList()));
@@ -103,47 +103,47 @@ public class ProductService {
 
     public List<Product> searchByBrand(String brand) {
         String key = "brand:" + safe(brand);
-        return cacheComputeIfAbsent(key, () ->
+        return getCachedOrCompute(key, () ->
                 products.values().stream()
                         .filter(p -> p.getBrand().equalsIgnoreCase(brand))
                         .collect(Collectors.toList()));
     }
 
     public List<Product> searchByPriceRange(double minPrice, double maxPrice) {
-        String key = String.format("price:%.2f:%.2f", minPrice, maxPrice);
-        return cacheComputeIfAbsent(key, () ->
+        String key = String.format("price:%.2f-%.2f", minPrice, maxPrice);
+        return getCachedOrCompute(key, () ->
                 products.values().stream()
                         .filter(p -> p.getPrice() >= minPrice && p.getPrice() <= maxPrice)
                         .collect(Collectors.toList()));
     }
 
-    public List<Product> filter(Optional<String> maybeName,
-                                Optional<String> maybeCategory,
-                                Optional<String> maybeBrand,
+    // --------------------- Универсальный фильтр ----------------------
+
+    public List<Product> filter(Optional<String> name,
+                                Optional<String> category,
+                                Optional<String> brand,
                                 Optional<Double> minPrice,
                                 Optional<Double> maxPrice) {
 
         Predicate<Product> predicate = p -> true;
 
-        if (maybeName.isPresent()) {
-            String name = maybeName.get().toLowerCase();
-            predicate = predicate.and(p -> p.getName().toLowerCase().contains(name));
+        if (name.isPresent()) {
+            String n = name.get().toLowerCase();
+            predicate = predicate.and(p -> p.getName().toLowerCase().contains(n));
         }
-        if (maybeCategory.isPresent()) {
-            String cat = maybeCategory.get().toLowerCase();
-            predicate = predicate.and(p -> p.getCategory().equalsIgnoreCase(cat));
+        if (category.isPresent()) {
+            String c = category.get().toLowerCase();
+            predicate = predicate.and(p -> p.getCategory().equalsIgnoreCase(c));
         }
-        if (maybeBrand.isPresent()) {
-            String brand = maybeBrand.get().toLowerCase();
-            predicate = predicate.and(p -> p.getBrand().equalsIgnoreCase(brand));
+        if (brand.isPresent()) {
+            String b = brand.get().toLowerCase();
+            predicate = predicate.and(p -> p.getBrand().equalsIgnoreCase(b));
         }
         if (minPrice.isPresent()) {
-            double min = minPrice.get();
-            predicate = predicate.and(p -> p.getPrice() >= min);
+            predicate = predicate.and(p -> p.getPrice() >= minPrice.get());
         }
         if (maxPrice.isPresent()) {
-            double max = maxPrice.get();
-            predicate = predicate.and(p -> p.getPrice() <= max);
+            predicate = predicate.and(p -> p.getPrice() <= maxPrice.get());
         }
 
         return products.values().stream()
@@ -151,15 +151,18 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    private synchronized <T> List<T> cacheComputeIfAbsent(String key, SupplierList<T> supplier) {
-        @SuppressWarnings("unchecked")
-        List<T> cached = (List<T>) cache.get(key);
-        if (cached != null) {
-            return new ArrayList<>(cached);
+    // --------------------- КЭШ ----------------------
+
+    private List<Product> getCachedOrCompute(String key, SupplierList<Product> supplier) {
+        if (cache.containsKey(key)) {
+            cacheHits++;
+            System.out.println("(из кэша)");
+            return cache.get(key);
         }
-        List<T> result = supplier.get();
-        cache.put(key, (List<Product>) result.stream().map(p -> (Product) p).collect(Collectors.toList()));
-        return new ArrayList<>(result);
+        cacheMisses++;
+        List<Product> result = supplier.get();
+        cache.put(key, result);
+        return result;
     }
 
     private void invalidateCache() {
@@ -174,10 +177,11 @@ public class ProductService {
         try {
             repository.saveAll(products.values());
         } catch (Exception e) {
-            System.err.println("Ошибка при сохранении данных репозитория: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Ошибка при сохранении данных: " + e.getMessage());
         }
     }
+
+    // --------------------- Функциональные интерфейсы ----------------------
 
     @FunctionalInterface
     public interface SupplierList<T> {
