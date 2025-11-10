@@ -27,7 +27,7 @@ public class App {
         ConsoleMenu menu = new ConsoleMenu(productService, auth);
         menu.start();
 
-        // --блок для демонстрации товаров, очищаем бд, добавляем демотовары, выводим на экран
+        // -блок для демонстрации товаров, очищаем бд, добавляем демотовары, выводим на экран
         //productService.deleteAll();
         //addDemoProducts(productService);
         //System.out.println("\nВсе продукты:");
@@ -36,6 +36,8 @@ public class App {
         auth.logout();
 
     }
+
+    //демотовары
     private static void addDemoProducts(ProductService productService) {
         Product p1 = new Product("iPhone 16", "Smartphone", "Apple", 130000);
         Product p2 = new Product("Galaxy S24", "Smartphone", "Samsung", 90000);
