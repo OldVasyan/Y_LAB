@@ -101,16 +101,42 @@ public class ConsoleMenu {
     }
 
     private void searchProducts() {
-        System.out.print("Поиск по полю (name/brand/category): ");
+        System.out.print("Поиск по полю (name/brand/category/price): ");
         String field = scanner.nextLine().toLowerCase();
-        System.out.print("Введите значение: ");
-        String value = scanner.nextLine();
 
-        long start = System.nanoTime();
+        String value = null;
+        if (!field.equals("price")) {
+            System.out.print("Введите значение: ");
+            value = scanner.nextLine();
+        }
+
+        long start = 0;
         var results = switch (field) {
-            case "name" -> productService.searchByName(value);
-            case "brand" -> productService.searchByBrand(value);
-            case "category" -> productService.searchByCategory(value);
+            case "name" -> {
+                start = System.nanoTime();
+                yield productService.searchByName(value);
+            }
+            case "brand" -> {
+                start = System.nanoTime();
+                yield productService.searchByBrand(value);
+            }
+            case "category" -> {
+                start = System.nanoTime();
+                yield productService.searchByCategory(value);
+            }
+            case "price" -> {
+                try {
+                    System.out.print("Мин. цена: ");
+                    double minPrice = Double.parseDouble(scanner.nextLine());
+                    System.out.print("Макс. цена: ");
+                    double maxPrice = Double.parseDouble(scanner.nextLine());
+                    start = System.nanoTime();
+                    yield productService.searchByPriceRange(minPrice, maxPrice);
+                } catch (NumberFormatException e) {
+                    System.out.println("Ошибка: цена должна быть числом.");
+                    yield null;
+                }
+            }
             default -> {
                 System.out.println("Неизвестное поле!");
                 yield null;
