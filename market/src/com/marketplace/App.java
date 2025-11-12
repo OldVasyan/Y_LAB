@@ -23,15 +23,17 @@ public class App {
 
 
 
+        // -блок для демонстрации товаров, очищаем бд, добавляем демотовары, выводим на экран
+        //productService.deleteAll();      // - удаляет все товары (очищает data)
+        //addDemoProducts(productService);
+        //System.out.println("\nВсе продукты:");
+        //productService.listAll().forEach(System.out::println);
+
+
         // вызов консольного меню
         ConsoleMenu menu = new ConsoleMenu(productService, auth);
         menu.start();
 
-        // -блок для демонстрации товаров, очищаем бд, добавляем демотовары, выводим на экран
-        //productService.deleteAll();
-        //addDemoProducts(productService);
-        //System.out.println("\nВсе продукты:");
-        //productService.listAll().forEach(System.out::println);
 
         auth.logout();
 

@@ -101,8 +101,17 @@ public class ConsoleMenu {
     }
 
     private void searchProducts() {
-        System.out.print("Поиск по полю (name/brand/category/price): ");
-        String field = scanner.nextLine().toLowerCase();
+        String field;
+        while (true) {
+            System.out.print("Поиск по полю (name/brand/category/price): ");
+            field = scanner.nextLine().trim().toLowerCase();
+
+            if (field.equals("name") || field.equals("brand") || field.equals("category") || field.equals("price")) {
+                break;
+            } else {
+                System.out.println("Ошибка: допустимые значения — name, brand, category или price.");
+            }
+        }
 
         String value = null;
         if (!field.equals("price")) {
@@ -137,10 +146,7 @@ public class ConsoleMenu {
                     yield null;
                 }
             }
-            default -> {
-                System.out.println("Неизвестное поле!");
-                yield null;
-            }
+            default -> null;
         };
 
         if (results != null) {
@@ -149,6 +155,7 @@ public class ConsoleMenu {
             System.out.printf("Найдено: %d, время: %.2f мс%n", results.size(), duration / 1_000_000.0);
         }
     }
+
 
     private void filterProducts() {
         System.out.println("Фильтрация товаров (оставьте пустое поле, если не хотите фильтровать):");
