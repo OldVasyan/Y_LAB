@@ -1,0 +1,15 @@
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: market_user
+      POSTGRES_PASSWORD: MarketPass!2025
+      POSTGRES_DB: marketdb
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+volumes:
+  pgdata:
