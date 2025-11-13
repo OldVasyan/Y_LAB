@@ -1,0 +1,10 @@
+com\marketplace\service\ProductService.class
+com\marketplace\App.class
+com\marketplace\service\AuditService.class
+com\marketplace\service\ProductService$SupplierList.class
+com\marketplace\model\Product.class
+com\marketplace\ConsoleMenu.class
+com\marketplace\service\ProductService$ProductUpdater.class
+com\marketplace\service\AuthService.class
+com\marketplace\repository\FileProductRepository.class
+com\marketplace\repository\ProductRepository.class
