@@ -25,9 +25,9 @@ public class App {
 
         // -блок для демонстрации товаров, очищаем бд, добавляем демотовары, выводим на экран
         //productService.deleteAll();      // - удаляет все товары (очищает data)
-        //addDemoProducts(productService);
-        //System.out.println("\nВсе продукты:");
-        //productService.listAll().forEach(System.out::println);
+        addDemoProducts(productService);
+        System.out.println("\nВсе продукты:");
+        productService.listAll().forEach(System.out::println);
 
 
         // вызов консольного меню
