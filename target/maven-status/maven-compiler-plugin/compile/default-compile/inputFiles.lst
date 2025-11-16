@@ -1,8 +1,10 @@
 Z:\JDK\IdeaProjects\Y_LAB_TEST\src\main\java\com\marketplace\App.java
 Z:\JDK\IdeaProjects\Y_LAB_TEST\src\main\java\com\marketplace\repository\ProductRepository.java
 Z:\JDK\IdeaProjects\Y_LAB_TEST\src\main\java\com\marketplace\service\ProductService.java
+Z:\JDK\IdeaProjects\Y_LAB_TEST\src\main\java\com\marketplace\db\DataSourceFactory.java
 Z:\JDK\IdeaProjects\Y_LAB_TEST\src\main\java\com\marketplace\model\Product.java
 Z:\JDK\IdeaProjects\Y_LAB_TEST\src\main\java\com\marketplace\service\AuditService.java
 Z:\JDK\IdeaProjects\Y_LAB_TEST\src\main\java\com\marketplace\ConsoleMenu.java
-Z:\JDK\IdeaProjects\Y_LAB_TEST\src\main\java\com\marketplace\repository\FileProductRepository.java
+Z:\JDK\IdeaProjects\Y_LAB_TEST\src\main\java\com\marketplace\repository\DbProductRepository.java
+Z:\JDK\IdeaProjects\Y_LAB_TEST\src\main\java\com\marketplace\db\LiquibaseRunner.java
 Z:\JDK\IdeaProjects\Y_LAB_TEST\src\main\java\com\marketplace\service\AuthService.java

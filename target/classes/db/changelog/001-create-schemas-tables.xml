@@ -5,6 +5,12 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
 
 
+    <changeSet id="1-create-schemas" author="you">
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS catalog;
+            CREATE SCHEMA IF NOT EXISTS liquibase;
+        </sql>
+    </changeSet>
 
     <changeSet id="2-create-sequence-product" author="you">
         <createSequence schemaName="catalog" sequenceName="product_id_seq" startValue="1"/>
@@ -28,8 +34,14 @@
     </changeSet>
 
     <changeSet id="4-default-id-from-seq" author="you">
-        <addDefaultValue schemaName="catalog" tableName="product" columnName="id"
-                         defaultValueSequenceNext="catalog.product_id_seq"/>
+        <sql>
+            ALTER TABLE catalog.product
+                ALTER COLUMN id SET DEFAULT nextval('catalog.product_id_seq');
+        </sql>
+        <rollback>
+            ALTER TABLE catalog.product
+            ALTER COLUMN id DROP DEFAULT;
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>
