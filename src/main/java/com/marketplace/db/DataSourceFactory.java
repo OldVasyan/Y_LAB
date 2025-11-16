@@ -26,13 +26,13 @@ public final class DataSourceFactory {
             throw new RuntimeException("Failed to load properties: " + propertiesPath, e);
         }
 
-        // Вызываем новый вспомогательный метод
+        // Вызываем перегруженый метод
         return createFromProperties(props);
     }
 
     /**
-     * НОВЫЙ МЕТОД: Создает DataSource, используя уже загруженные Properties.
-     * Идеально подходит для Testcontainers, который динамически генерирует URL, User, Pass.
+     * Перегруженный метод Создает DataSource, используя уже загруженные Properties.
+     * Подходит для Testcontainers, который динамически генерирует URL, User, Pass.
      */
     public static DataSource createFromProperties(Properties props) {
         String url = props.getProperty("db.url");

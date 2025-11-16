@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 
+//Легаси код, потом перепишу
+
 public class AuditService {
     private static final String LOGS_DIR = "logs";
     private static final String LOG_FILE = LOGS_DIR + "/audit.log";

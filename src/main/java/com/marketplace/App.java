@@ -15,7 +15,7 @@ public class App {
 
     public static void main(String[] args) {
 
-        // 1. Загружаем application.properties
+        // Загружаем application.properties
         Properties props = new Properties();
         try (var in = App.class.getClassLoader().getResourceAsStream("application.properties")) {
             if (in != null) props.load(in);
@@ -24,28 +24,28 @@ public class App {
             throw new RuntimeException("Failed to load application.properties", e);
         }
 
-        // 2. Создаём DataSource из настроек
+        // Создаём DataSource из настроек
         DataSource dataSource = DataSourceFactory.createFromProperties("application.properties");
 
-        // 3. Запускаем Liquibase миграции
+        // Запускаем Liquibase миграции
         LiquibaseRunner.runMigrations(dataSource, props);
 
-        // 4. Читаем schema
+        // Читаем schema
         String schema = props.getProperty("db.schema", "catalog");
 
-        // 5. Создаём репозиторий
+        // Создаём репозиторий
         ProductRepository repository = new DbProductRepository(dataSource, schema);
 
-        // 6. Сервисы
+        // Сервисы
         AuditService auditService = new AuditService();
         AuthService auth = new AuthService(auditService);
         ProductService productService = new ProductService(repository, auditService);
 
-        // 7. Авторизация
+        // Авторизация
         auth.login("admin", "admin123");
         productService.setCurrentUser(auth.getCurrentUser().orElse("unknown"));
 
-        // 8. Запуск консольного меню
+        // Запуск консольного меню
         ConsoleMenu menu = new ConsoleMenu(productService, auth);
         menu.start();
 

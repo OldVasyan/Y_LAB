@@ -25,7 +25,7 @@ public class DbProductRepositoryIntegrationTest extends DatabaseTestBase {
         this.schema = testProperties.getProperty("db.schema");
         this.repository = new DbProductRepository(testDataSource, schema);
 
-        // ОЧИСТКА: Удаляем все данные и сбрасываем Sequence
+        // Удаляем все данные и сбрасываем Sequence
         try (Connection connection = testDataSource.getConnection();
              Statement statement = connection.createStatement()) {
 
@@ -88,10 +88,10 @@ public class DbProductRepositoryIntegrationTest extends DatabaseTestBase {
                 Instant.now()
         );
 
-        // Act: Вызываем saveOrUpdate, который должен выполнить UPDATE
+        // Вызываем saveOrUpdate, который должен выполнить UPDATE
         repository.saveOrUpdate(productToUpdate);
 
-        // Assert
+
         // Проверяем, что изменения сохранены в БД
         Product foundProduct = repository.findById(productId);
         assertNotNull(foundProduct, "Обновленный товар должен быть найден");
@@ -99,10 +99,10 @@ public class DbProductRepositoryIntegrationTest extends DatabaseTestBase {
         assertEquals(200.00, foundProduct.getPrice(), 0.001, "Цена должна быть обновлена");
     }
 
-    // Проверка удаления ---
+    // Проверка удаления
     @Test
     void testDeleteProduct() {
-        // Arrange: Сохраняем товар (ID=1)
+        // Сохраняем товар (ID=1)
         Product productToDelete = new Product(
                 null, "To Delete", "Junk", "ABC", 1.00, Instant.now(), Instant.now());
         repository.saveOrUpdate(productToDelete);
@@ -110,7 +110,7 @@ public class DbProductRepositoryIntegrationTest extends DatabaseTestBase {
         Long productId = productToDelete.getId(); // ID должен быть 1
 
         // Act
-        boolean deleted = repository.deleteById(productId); // Вызываем deleteById
+        boolean deleted = repository.deleteById(productId);
 
         // Assert
         assertTrue(deleted, "Метод deleteById должен вернуть true");
