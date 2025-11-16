@@ -4,17 +4,16 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
- * Простейшая модель. Serializable — чтобы в будущем можно было сохранять в файл.
+ * Простейшая модель
  */
 
 public class Product implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final UUID id;
+    private Long id;
     private String name;
     private String category;
     private String brand;
@@ -23,10 +22,10 @@ public class Product implements Serializable {
     private Instant updatedAt;
 
     public Product(String name, String category, String brand, double price) {
-        this(UUID.randomUUID(), name, category, brand, price, Instant.now(), Instant.now());
+        this(null, name, category, brand, price, Instant.now(), Instant.now());
     }
 
-    public Product(UUID id, String name, String category, String brand, double price,
+    public Product(Long id, String name, String category, String brand, double price,
                    Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.name = name != null ? name : "";
@@ -37,7 +36,7 @@ public class Product implements Serializable {
         this.updatedAt = updatedAt != null ? updatedAt : this.createdAt;
     }
 
-    public UUID getId() { return id; }
+    public Long getId() { return id; }
     public String getName() { return name; }
     public String getCategory() { return category; }
     public String getBrand() { return brand; }
@@ -49,7 +48,9 @@ public class Product implements Serializable {
         this.name = name != null ? name : this.name;
         touch();
     }
-
+    public void setId(Long id){
+        this.id = id;
+    }
     public void setCategory(String category) {
         this.category = category != null ? category : this.category;
         touch();

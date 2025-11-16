@@ -8,7 +8,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 public class DbProductRepository implements ProductRepository {
 
@@ -24,7 +23,7 @@ public class DbProductRepository implements ProductRepository {
 
     @Override
     public List<Product> loadAll() {
-        String sql = "SELECT uuid, name, category, brand, price, created_at, updated_at FROM " + schema + ".product";
+        String sql = "SELECT id, name, category, brand, price, created_at, updated_at FROM " + schema + ".product";
         List<Product> out = new ArrayList<>();
         try (Connection c = ds.getConnection();
              PreparedStatement ps = c.prepareStatement(sql);
@@ -48,17 +47,17 @@ public class DbProductRepository implements ProductRepository {
 
     // --- CRUDы ---
 
-    public Product findByUuid(UUID uuid) {
-        String sql = "SELECT uuid, name, category, brand, price, created_at, updated_at FROM " + schema + ".product WHERE uuid = ?";
+    public Product findById(Long id) {
+        String sql = "SELECT id, name, category, brand, price, created_at, updated_at FROM " + schema + ".product WHERE id = ?";
         try (Connection c = ds.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setObject(1, uuid);
+            ps.setObject(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapRow(rs);
                 return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to find product by uuid", e);
+            throw new RuntimeException("Failed to find product by id", e);
         }
     }
 
@@ -69,60 +68,88 @@ public class DbProductRepository implements ProductRepository {
             c.setAutoCommit(false);
             Instant now = Instant.now();
 
-            try (PreparedStatement upd = c.prepareStatement(
-                    "UPDATE " + schema + ".product " +
-                            "SET name=?, category=?, brand=?, price=?, updated_at=? " +
-                            "WHERE uuid=?"
+            // 1. UPDATE: Если ID уже существует (p.getId() != null), пытаемся обновить по числовому ID
+            if (p.getId() != null) {
+                try (PreparedStatement upd = c.prepareStatement(
+                        "UPDATE " + schema + ".product " +
+                                "SET name=?, category=?, brand=?, price=?, updated_at=? " +
+                                "WHERE id=?"
+                )) {
+                    upd.setString(1, p.getName());
+                    upd.setString(2, p.getCategory());
+                    upd.setString(3, p.getBrand());
+                    upd.setDouble(4, p.getPrice());
+                    upd.setTimestamp(5, Timestamp.from(now));
+                    upd.setLong(6, p.getId());
+
+                    if (upd.executeUpdate() > 0) {
+                        c.commit();
+                        return;
+                    }
+                }
+            }
+
+            // 2. INSERT: Если ID==null или UPDATE не прошел, выполняем вставку
+            String INSERT_SQL = "INSERT INTO " + schema + ".product " +
+                    "(name, category, brand, price, created_at, updated_at) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
+
+            try (PreparedStatement ins = c.prepareStatement(
+                    INSERT_SQL,
+                    Statement.RETURN_GENERATED_KEYS
             )) {
-                upd.setString(1, p.getName());
-                upd.setString(2, p.getCategory());
-                upd.setString(3, p.getBrand());
-                upd.setDouble(4, p.getPrice());
-                upd.setTimestamp(5, Timestamp.from(now));   // updated_at = now
-                upd.setObject(6, p.getId());
+                ins.setString(1, p.getName());
+                ins.setString(2, p.getCategory());
+                ins.setString(3, p.getBrand());
+                ins.setDouble(4, p.getPrice());
+                ins.setTimestamp(5, Timestamp.from(now));
+                ins.setTimestamp(6, Timestamp.from(now));
 
-                int updated = upd.executeUpdate();
+                ins.executeUpdate();
 
-                if (updated == 0) {
-
-                    try (PreparedStatement ins = c.prepareStatement(
-                            "INSERT INTO " + schema + ".product " +
-                                    "(uuid, name, category, brand, price, created_at, updated_at) " +
-                                    "VALUES (?, ?, ?, ?, ?, ?, ?)"
-                    )) {
-                        ins.setObject(1, p.getId());
-                        ins.setString(2, p.getName());
-                        ins.setString(3, p.getCategory());
-                        ins.setString(4, p.getBrand());
-                        ins.setDouble(5, p.getPrice());
-                        ins.setTimestamp(6, Timestamp.from(now));
-                        ins.setTimestamp(7, Timestamp.from(now));
-                        ins.executeUpdate();
+                // 3. Получаем сгенерированный ID
+                try (ResultSet generatedKeys = ins.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        Long generatedId = generatedKeys.getLong(1);
+                        p.setId(generatedId);
                     }
                 }
             }
 
             c.commit();
-
         } catch (SQLException e) {
             throw new RuntimeException("Failed to saveOrUpdate product", e);
         }
     }
 
-    public boolean deleteByUuid(UUID uuid) {
-        String sql = "DELETE FROM " + schema + ".product WHERE uuid = ?";
+    public boolean deleteById(Long id) {
+        String sql = "DELETE FROM " + schema + ".product WHERE id = ?";
         try (Connection c = ds.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setObject(1, uuid);
+            PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setLong(1, id);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("Failed to delete product", e);
         }
     }
 
+    @Override
+    public void deleteAll() {
+        String sql = "DELETE FROM " + schema + ".product";
+        try (Connection c = ds.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            int deletedCount = ps.executeUpdate();
+            System.out.println("Удалено товаров: " + deletedCount);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete all products", e);
+        }
+    }
+
     // -- mapping --
     private Product mapRow(ResultSet rs) throws SQLException {
-        UUID uuid = (UUID) rs.getObject("uuid");
+        Long id = rs.getLong("id");
         String name = rs.getString("name");
         String category = rs.getString("category");
         String brand = rs.getString("brand");
@@ -133,7 +160,7 @@ public class DbProductRepository implements ProductRepository {
         Instant created = createdTs != null ? createdTs.toInstant() : Instant.now();
         Instant updated = updatedTs != null ? updatedTs.toInstant() : created;
 
-        return new Product(uuid, name, category, brand, price, created, updated);
+        return new Product(id, name, category, brand, price, created, updated);
     }
 
     @Override

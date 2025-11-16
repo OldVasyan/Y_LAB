@@ -59,14 +59,5 @@ public class AuthService {
         return Optional.ofNullable(currentUser);
     }
 
-    public void register(String username, String password) {
-        if (users.containsKey(username)) {
-            System.out.println("Пользователь уже существует.");
-            auditService.log(username, "попытка регистрации уже существующего пользователя");
-        } else {
-            users.put(username, password);
-            System.out.println("Пользователь " + username + " зарегистрирован.");
-            auditService.log(username, "регистрация нового пользователя");
-        }
-    }
+
 }

@@ -52,16 +52,20 @@ public class ConsoleMenu {
         System.out.print("Бренд: ");
         String brand = scanner.nextLine();
         System.out.print("Цена: ");
-        double price = Double.parseDouble(scanner.nextLine());
 
-        Product p = new Product(name, category, brand, price);
-        productService.addProduct(p);
-        System.out.println("Товар добавлен: " + p.getName());
+        try {
+            double price = Double.parseDouble(scanner.nextLine());
+            Product p = new Product(name, category, brand, price);
+            productService.addProduct(p);
+            System.out.println("Товар добавлен: " + p.getName() + " ID: " + p.getId());
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: Цена должна быть числом!");
+        }
     }
 
     private void updateProduct() {
         System.out.print("Введите ID товара для обновления: ");
-        UUID id = UUID.fromString(scanner.nextLine());
+        Long id = Long.parseLong(scanner.nextLine());
 
         productService.updateProduct(id, product -> {
             System.out.print("Новое название (" + product.getName() + "): ");
@@ -86,7 +90,7 @@ public class ConsoleMenu {
 
     private void deleteProduct() {
         System.out.print("Введите ID товара для удаления: ");
-        UUID id = UUID.fromString(scanner.nextLine());
+        Long id = Long.parseLong(scanner.nextLine());
         if (productService.deleteProduct(id)) {
             System.out.println("Товар удалён.");
         } else {

@@ -21,9 +21,6 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="uuid" type="uuid">
-                <constraints nullable="false" unique="true"/>
-            </column>
             <column name="name" type="varchar(255)"/>
             <column name="category" type="varchar(255)"/>
             <column name="brand" type="varchar(255)"/>
@@ -42,6 +39,13 @@
             ALTER TABLE catalog.product
             ALTER COLUMN id DROP DEFAULT;
         </rollback>
+    </changeSet>
+
+    <changeSet id="5-update-sequence-after-seed" author="you">
+        <sql>
+            SELECT setval('catalog.product_id_seq', (SELECT MAX(id) FROM catalog.product));
+        </sql>
+        <rollback/>
     </changeSet>
 
 </databaseChangeLog>

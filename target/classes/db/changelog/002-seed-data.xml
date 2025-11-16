@@ -7,7 +7,6 @@
     <changeSet id="seed-products" author="you">
         <insert tableName="product" schemaName="catalog">
             <column name="id" valueNumeric="1"/>
-            <column name="uuid" value="00000000-0000-0000-0000-000000000001"/>
             <column name="name" value="iPhone 16"/>
             <column name="category" value="Smartphone"/>
             <column name="brand" value="Apple"/>

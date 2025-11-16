@@ -12,6 +12,11 @@ public interface ProductRepository {
 
     void saveAll(Collection<Product> products);
 
+    void saveOrUpdate(Product p);
+    Product findById(Long id);
+    boolean deleteById(Long id);
+    void deleteAll();
+
     default String getStorageInfo() {
         return "unknown";
     }
