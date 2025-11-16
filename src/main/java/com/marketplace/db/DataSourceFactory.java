@@ -12,6 +12,9 @@ public final class DataSourceFactory {
 
     private DataSourceFactory() {}
 
+    /**
+     * Создает DataSource, загружая настройки из файла на classpath.
+     */
     public static DataSource createFromProperties(String propertiesPath) {
         Properties props = new Properties();
         try (InputStream in = DataSourceFactory.class.getClassLoader().getResourceAsStream(propertiesPath)) {
@@ -23,20 +26,36 @@ public final class DataSourceFactory {
             throw new RuntimeException("Failed to load properties: " + propertiesPath, e);
         }
 
+        // Вызываем новый вспомогательный метод
+        return createFromProperties(props);
+    }
+
+    /**
+     * НОВЫЙ МЕТОД: Создает DataSource, используя уже загруженные Properties.
+     * Идеально подходит для Testcontainers, который динамически генерирует URL, User, Pass.
+     */
+    public static DataSource createFromProperties(Properties props) {
         String url = props.getProperty("db.url");
         String user = props.getProperty("db.user");
         String pass = props.getProperty("db.password");
+
+        if (url == null || user == null || pass == null) {
+            throw new IllegalArgumentException("Missing required DB connection properties (url, user, password)");
+        }
 
         HikariConfig cfg = new HikariConfig();
         cfg.setJdbcUrl(url);
         cfg.setUsername(user);
         cfg.setPassword(pass);
 
-        // конфигурация
+        // конфигурация пула
+        // Если Testcontainers не передает эти настройки, будут использоваться значения по умолчанию
         cfg.setMaximumPoolSize(Integer.parseInt(props.getProperty("db.pool.max", "5")));
         cfg.setMinimumIdle(Integer.parseInt(props.getProperty("db.pool.min", "1")));
         cfg.setConnectionTimeout(Long.parseLong(props.getProperty("db.pool.timeoutMs", "30000")));
-        cfg.setPoolName("y_lab_pool");
+
+        // В тестах лучше использовать другое имя пула или динамическое (например, "test_pool")
+        cfg.setPoolName(props.getProperty("db.pool.name", "y_lab_pool"));
 
         return new HikariDataSource(cfg);
     }

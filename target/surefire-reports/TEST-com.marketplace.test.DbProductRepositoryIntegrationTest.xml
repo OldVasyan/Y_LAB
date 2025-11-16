@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.marketplace.test.DbProductRepositoryIntegrationTest" time="3.412" tests="3" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1251"/>
+    <property name="java.class.path" value="Z:\JDK\IdeaProjects\Y_LAB_TEST\target\test-classes;Z:\JDK\IdeaProjects\Y_LAB_TEST\target\classes;C:\Users\Admin\.m2\repository\org\postgresql\postgresql\42.6.0\postgresql-42.6.0.jar;C:\Users\Admin\.m2\repository\org\checkerframework\checker-qual\3.31.0\checker-qual-3.31.0.jar;C:\Users\Admin\.m2\repository\com\zaxxer\HikariCP\5.0.1\HikariCP-5.0.1.jar;C:\Users\Admin\.m2\repository\org\slf4j\slf4j-api\1.7.36\slf4j-api-1.7.36.jar;C:\Users\Admin\.m2\repository\org\slf4j\slf4j-simple\1.7.36\slf4j-simple-1.7.36.jar;C:\Users\Admin\.m2\repository\org\yaml\snakeyaml\2.2\snakeyaml-2.2.jar;C:\Users\Admin\.m2\repository\org\liquibase\liquibase-core\4.29.2\liquibase-core-4.29.2.jar;C:\Users\Admin\.m2\repository\com\opencsv\opencsv\5.9\opencsv-5.9.jar;C:\Users\Admin\.m2\repository\javax\xml\bind\jaxb-api\2.3.1\jaxb-api-2.3.1.jar;C:\Users\Admin\.m2\repository\commons-io\commons-io\2.16.1\commons-io-2.16.1.jar;C:\Users\Admin\.m2\repository\org\apache\commons\commons-collections4\4.4\commons-collections4-4.4.jar;C:\Users\Admin\.m2\repository\org\apache\commons\commons-text\1.12.0\commons-text-1.12.0.jar;C:\Users\Admin\.m2\repository\org\apache\commons\commons-lang3\3.15.0\commons-lang3-3.15.0.jar;C:\Users\Admin\.m2\repository\org\testcontainers\postgresql\1.19.0\postgresql-1.19.0.jar;C:\Users\Admin\.m2\repository\org\testcontainers\jdbc\1.19.0\jdbc-1.19.0.jar;C:\Users\Admin\.m2\repository\org\testcontainers\database-commons\1.19.0\database-commons-1.19.0.jar;C:\Users\Admin\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.0\junit-jupiter-5.10.0.jar;C:\Users\Admin\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.0\junit-jupiter-api-5.10.0.jar;C:\Users\Admin\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Admin\.m2\repository\org\junit\platform\junit-platform-commons\1.10.0\junit-platform-commons-1.10.0.jar;C:\Users\Admin\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Admin\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.0\junit-jupiter-params-5.10.0.jar;C:\Users\Admin\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.0\junit-jupiter-engine-5.10.0.jar;C:\Users\Admin\.m2\repository\org\junit\platform\junit-platform-engine\1.10.0\junit-platform-engine-1.10.0.jar;C:\Users\Admin\.m2\repository\org\testcontainers\testcontainers\1.19.7\testcontainers-1.19.7.jar;C:\Users\Admin\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\Admin\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\Admin\.m2\repository\org\apache\commons\commons-compress\1.24.0\commons-compress-1.24.0.jar;C:\Users\Admin\.m2\repository\org\rnorth\duct-tape\duct-tape\1.0.8\duct-tape-1.0.8.jar;C:\Users\Admin\.m2\repository\org\jetbrains\annotations\17.0.0\annotations-17.0.0.jar;C:\Users\Admin\.m2\repository\com\github\docker-java\docker-java-api\3.3.6\docker-java-api-3.3.6.jar;C:\Users\Admin\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.10.3\jackson-annotations-2.10.3.jar;C:\Users\Admin\.m2\repository\com\github\docker-java\docker-java-transport-zerodep\3.3.6\docker-java-transport-zerodep-3.3.6.jar;C:\Users\Admin\.m2\repository\com\github\docker-java\docker-java-transport\3.3.6\docker-java-transport-3.3.6.jar;C:\Users\Admin\.m2\repository\net\java\dev\jna\jna\5.13.0\jna-5.13.0.jar;"/>
+    <property name="java.vm.vendor" value="Amazon.com Inc."/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://aws.amazon.com/corretto/"/>
+    <property name="user.timezone" value="Europe/Moscow"/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="RU"/>
+    <property name="sun.boot.library.path" value="C:\Users\Admin\.jdks\corretto-21.0.6\bin"/>
+    <property name="sun.java.command" value="C:\Users\Admin\AppData\Local\Temp\surefire14445111519703899509\surefirebooter-20251116183742376_3.jar C:\Users\Admin\AppData\Local\Temp\surefire14445111519703899509 2025-11-16T18-37-42_312-jvmRun1 surefire-20251116183742376_1tmp surefire_0-20251116183742376_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="Z:\JDK\IdeaProjects\Y_LAB_TEST\target\test-classes;Z:\JDK\IdeaProjects\Y_LAB_TEST\target\classes;C:\Users\Admin\.m2\repository\org\postgresql\postgresql\42.6.0\postgresql-42.6.0.jar;C:\Users\Admin\.m2\repository\org\checkerframework\checker-qual\3.31.0\checker-qual-3.31.0.jar;C:\Users\Admin\.m2\repository\com\zaxxer\HikariCP\5.0.1\HikariCP-5.0.1.jar;C:\Users\Admin\.m2\repository\org\slf4j\slf4j-api\1.7.36\slf4j-api-1.7.36.jar;C:\Users\Admin\.m2\repository\org\slf4j\slf4j-simple\1.7.36\slf4j-simple-1.7.36.jar;C:\Users\Admin\.m2\repository\org\yaml\snakeyaml\2.2\snakeyaml-2.2.jar;C:\Users\Admin\.m2\repository\org\liquibase\liquibase-core\4.29.2\liquibase-core-4.29.2.jar;C:\Users\Admin\.m2\repository\com\opencsv\opencsv\5.9\opencsv-5.9.jar;C:\Users\Admin\.m2\repository\javax\xml\bind\jaxb-api\2.3.1\jaxb-api-2.3.1.jar;C:\Users\Admin\.m2\repository\commons-io\commons-io\2.16.1\commons-io-2.16.1.jar;C:\Users\Admin\.m2\repository\org\apache\commons\commons-collections4\4.4\commons-collections4-4.4.jar;C:\Users\Admin\.m2\repository\org\apache\commons\commons-text\1.12.0\commons-text-1.12.0.jar;C:\Users\Admin\.m2\repository\org\apache\commons\commons-lang3\3.15.0\commons-lang3-3.15.0.jar;C:\Users\Admin\.m2\repository\org\testcontainers\postgresql\1.19.0\postgresql-1.19.0.jar;C:\Users\Admin\.m2\repository\org\testcontainers\jdbc\1.19.0\jdbc-1.19.0.jar;C:\Users\Admin\.m2\repository\org\testcontainers\database-commons\1.19.0\database-commons-1.19.0.jar;C:\Users\Admin\.m2\repository\org\junit\jupiter\junit-jupiter\5.10.0\junit-jupiter-5.10.0.jar;C:\Users\Admin\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.10.0\junit-jupiter-api-5.10.0.jar;C:\Users\Admin\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Admin\.m2\repository\org\junit\platform\junit-platform-commons\1.10.0\junit-platform-commons-1.10.0.jar;C:\Users\Admin\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Admin\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.10.0\junit-jupiter-params-5.10.0.jar;C:\Users\Admin\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.10.0\junit-jupiter-engine-5.10.0.jar;C:\Users\Admin\.m2\repository\org\junit\platform\junit-platform-engine\1.10.0\junit-platform-engine-1.10.0.jar;C:\Users\Admin\.m2\repository\org\testcontainers\testcontainers\1.19.7\testcontainers-1.19.7.jar;C:\Users\Admin\.m2\repository\junit\junit\4.13.2\junit-4.13.2.jar;C:\Users\Admin\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\Admin\.m2\repository\org\apache\commons\commons-compress\1.24.0\commons-compress-1.24.0.jar;C:\Users\Admin\.m2\repository\org\rnorth\duct-tape\duct-tape\1.0.8\duct-tape-1.0.8.jar;C:\Users\Admin\.m2\repository\org\jetbrains\annotations\17.0.0\annotations-17.0.0.jar;C:\Users\Admin\.m2\repository\com\github\docker-java\docker-java-api\3.3.6\docker-java-api-3.3.6.jar;C:\Users\Admin\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.10.3\jackson-annotations-2.10.3.jar;C:\Users\Admin\.m2\repository\com\github\docker-java\docker-java-transport-zerodep\3.3.6\docker-java-transport-zerodep-3.3.6.jar;C:\Users\Admin\.m2\repository\com\github\docker-java\docker-java-transport\3.3.6\docker-java-transport-3.3.6.jar;C:\Users\Admin\.m2\repository\net\java\dev\jna\jna\5.13.0\jna-5.13.0.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\Admin"/>
+    <property name="user.language" value="ru"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-01-21"/>
+    <property name="java.home" value="C:\Users\Admin\.jdks\corretto-21.0.6"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="Z:\JDK\IdeaProjects\Y_LAB_TEST"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="C:\Users\Admin\AppData\Local\Temp\surefire14445111519703899509\surefirebooter-20251116183742376_3.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="21.0.6+7-LTS"/>
+    <property name="user.name" value="Admin"/>
+    <property name="stdout.encoding" value="Cp1251"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Corretto-21.0.6.7.1"/>
+    <property name="localRepository" value="C:\Users\Admin\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/corretto/corretto-21/issues/"/>
+    <property name="java.io.tmpdir" value="C:\Users\Admin\AppData\Local\Temp\"/>
+    <property name="java.version" value="21.0.6"/>
+    <property name="user.dir" value="Z:\JDK\IdeaProjects\Y_LAB_TEST"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1251"/>
+    <property name="java.library.path" value="C:\Users\Admin\.jdks\corretto-21.0.6\bin;C:\windows\Sun\Java\bin;C:\windows\system32;C:\windows;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files\Crucial\Crucial Storage Executive;C:\Program Files\dotnet\;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Apache\maven\apache-maven-3.9.11\bin;C:\Users\Admin\.jdks\corretto-21.0.6\bin;C:\Program Files\Git\cmd;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files\Crucial\Crucial Storage Executive;C:\Program Files\dotnet\;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Apache\maven\apache-maven-3.9.11\bin;C:\Users\Admin\.jdks\corretto-21.0.6\bin;C:\Program Files\Git\cmd;C:\Users\Admin\AppData\Local\Microsoft\WindowsApps;C:\Users\Admin\.dotnet\tools;C:\Program Files\Azure Data Studio\bin;C:\Users\Admin\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\PostgreSQL\15\bin;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="Cp1251"/>
+    <property name="java.vendor" value="Amazon.com Inc."/>
+    <property name="java.vm.version" value="21.0.6+7-LTS"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="65.0"/>
+  </properties>
+  <testcase name="testUpdateProduct" classname="com.marketplace.test.DbProductRepositoryIntegrationTest" time="0.02">
+    <system-out><![CDATA[Running Changeset: db/changelog/001-create-schemas-tables.xml::1-create-schemas::you
+Running Changeset: db/changelog/001-create-schemas-tables.xml::2-create-sequence-product::you
+Running Changeset: db/changelog/001-create-schemas-tables.xml::3-create-product-table::you
+Running Changeset: db/changelog/001-create-schemas-tables.xml::4-default-id-from-seq::you
+Running Changeset: db/changelog/001-create-schemas-tables.xml::5-update-sequence-after-seed::you
+Running Changeset: db/changelog/002-seed-data.xml::seed-products::you
+Running Changeset: db/changelog/003-test-add-users-table.xml::create-user-table::you
+
+UPDATE SUMMARY
+Run:                          7
+Previously run:               0
+Filtered out:                 0
+-------------------------------
+Total change sets:            7
+
+Liquibase: Update has been successful. Rows affected: 8
+Liquibase migrations executed successfully.
+]]></system-out>
+    <system-err><![CDATA[[main] INFO org.testcontainers.images.PullPolicy - Image pull policy will be performed by: DefaultPullPolicy()
+[main] INFO org.testcontainers.utility.ImageNameSubstitutor - Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+[main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy - Loaded org.testcontainers.dockerclient.NpipeSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+[main] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy - Found Docker environment with local Npipe socket (npipe:////./pipe/docker_engine)
+[main] INFO org.testcontainers.DockerClientFactory - Docker host IP address is localhost
+[main] INFO org.testcontainers.DockerClientFactory - Connected to docker: 
+  Server Version: 28.0.1
+  API Version: 1.48
+  Operating System: Docker Desktop
+  Total Memory: 15946 MB
+[main] INFO tc.testcontainers/ryuk:0.6.0 - Creating container for image: testcontainers/ryuk:0.6.0
+[main] INFO org.testcontainers.utility.RegistryAuthLocator - Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+[main] INFO tc.testcontainers/ryuk:0.6.0 - Container testcontainers/ryuk:0.6.0 is starting: 1c916634f12ea693786e16c0c893c7ce5f7248792cbd303543de8eb9d4162025
+[main] INFO tc.testcontainers/ryuk:0.6.0 - Container testcontainers/ryuk:0.6.0 started in PT0.4203878S
+[main] INFO org.testcontainers.utility.RyukResourceReaper - Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+[main] INFO org.testcontainers.DockerClientFactory - Checking the system...
+[main] INFO org.testcontainers.DockerClientFactory - ✔︎ Docker server version should be at least 1.6.0
+[main] INFO tc.postgres:15 - Creating container for image: postgres:15
+[main] INFO tc.postgres:15 - Container postgres:15 is starting: 60e4ab171782ad41c3c2199da00e11a26849c10a2e2de5ede334754928c81e76
+[main] INFO tc.postgres:15 - Container postgres:15 started in PT1.1308145S
+[main] INFO tc.postgres:15 - Container is started (JDBC URL: jdbc:postgresql://localhost:63230/test_marketdb?loggerLevel=OFF)
+[main] INFO com.zaxxer.hikari.HikariDataSource - y_lab_pool - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - y_lab_pool - Added connection org.postgresql.jdbc.PgConnection@1b32cd16
+[main] INFO com.zaxxer.hikari.HikariDataSource - y_lab_pool - Start completed.
+нояб. 16, 2025 6:37:44 PM liquibase.database
+INFO: Set default schema name to public
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: Creating database history table with name: liquibase.databasechangelog
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: Reading from liquibase.databasechangelog
+нояб. 16, 2025 6:37:45 PM liquibase.lockservice
+INFO: Successfully acquired change log lock
+нояб. 16, 2025 6:37:45 PM liquibase.command
+INFO: Using deploymentId: 3307465371
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: Reading from liquibase.databasechangelog
+нояб. 16, 2025 6:37:45 PM liquibase.executor
+WARNING: schema "catalog" already exists, skipping
+нояб. 16, 2025 6:37:45 PM liquibase.executor
+WARNING: schema "liquibase" already exists, skipping
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: Custom SQL executed
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: ChangeSet db/changelog/001-create-schemas-tables.xml::1-create-schemas::you ran successfully in 7ms
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: Sequence product_id_seq created
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: ChangeSet db/changelog/001-create-schemas-tables.xml::2-create-sequence-product::you ran successfully in 3ms
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: Table product created
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: ChangeSet db/changelog/001-create-schemas-tables.xml::3-create-product-table::you ran successfully in 3ms
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: Custom SQL executed
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: ChangeSet db/changelog/001-create-schemas-tables.xml::4-default-id-from-seq::you ran successfully in 2ms
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: Custom SQL executed
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: ChangeSet db/changelog/001-create-schemas-tables.xml::5-update-sequence-after-seed::you ran successfully in 2ms
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: New row inserted into product
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: ChangeSet db/changelog/002-seed-data.xml::seed-products::you ran successfully in 4ms
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: Table user created
+нояб. 16, 2025 6:37:45 PM liquibase.changelog
+INFO: ChangeSet db/changelog/003-test-add-users-table.xml::create-user-table::you ran successfully in 3ms
+нояб. 16, 2025 6:37:45 PM liquibase.util
+INFO: UPDATE SUMMARY
+нояб. 16, 2025 6:37:45 PM liquibase.util
+INFO: Run:                          7
+нояб. 16, 2025 6:37:45 PM liquibase.util
+INFO: Previously run:               0
+нояб. 16, 2025 6:37:45 PM liquibase.util
+INFO: Filtered out:                 0
+нояб. 16, 2025 6:37:45 PM liquibase.util
+INFO: -------------------------------
+нояб. 16, 2025 6:37:45 PM liquibase.util
+INFO: Total change sets:            7
+нояб. 16, 2025 6:37:45 PM liquibase.util
+INFO: Update summary generated
+нояб. 16, 2025 6:37:45 PM liquibase.command
+INFO: Update command completed successfully.
+нояб. 16, 2025 6:37:45 PM liquibase.lockservice
+INFO: Successfully released change log lock
+нояб. 16, 2025 6:37:45 PM liquibase.command
+INFO: Command execution complete
+]]></system-err>
+  </testcase>
+  <testcase name="testDeleteProduct" classname="com.marketplace.test.DbProductRepositoryIntegrationTest" time="0.005"/>
+  <testcase name="testSaveGeneratesIdAndRetrievesCorrectly" classname="com.marketplace.test.DbProductRepositoryIntegrationTest" time="0.004"/>
+</testsuite>

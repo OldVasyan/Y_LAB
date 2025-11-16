@@ -43,7 +43,9 @@
 
     <changeSet id="5-update-sequence-after-seed" author="you">
         <sql>
-            SELECT setval('catalog.product_id_seq', (SELECT MAX(id) FROM catalog.product));
+            SELECT setval('catalog.product_id_seq',
+                          COALESCE((SELECT MAX(id) FROM catalog.product), 0) + 1,
+                          false);
         </sql>
         <rollback/>
     </changeSet>
