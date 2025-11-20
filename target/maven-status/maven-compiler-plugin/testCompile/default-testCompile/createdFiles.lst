@@ -1,0 +1,2 @@
+com\marketplace\test\DatabaseTestBase.class
+com\marketplace\test\DbProductRepositoryIntegrationTest.class
